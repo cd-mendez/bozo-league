@@ -1,0 +1,2 @@
+# bozo-league
+bozo bets
