@@ -192,7 +192,7 @@
    (The long string in the sheet URL between /d/ and /edit.)
    The Sheet must be shared: Anyone with the link -> Viewer.
    ===================================================================== */
-const SHEET_ID = "";
+const SHEET_ID = "1OdFtqM4lmmMXC5HImZKVFPzrinpKO1HFhn7YLynAEb0";
 
 const SLATE_ORDER = { "Saturday": 0, "Sunday": 1 };
 const SEASON_WEEKS = 18; // for the "on pace" joke
@@ -261,23 +261,37 @@ const money = n => "$" + Number(n).toFixed(2).replace(/\.00$/, "");
 /* ---------------- Google Sheets (gviz) loader ---------------- */
 async function fetchTab(name) {
   const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&headers=1&sheet=${encodeURIComponent(name)}`;
-  const txt = await (await fetch(url)).text();
-  const json = JSON.parse(txt.substring(txt.indexOf("{"), txt.lastIndexOf("}") + 1));
-  const labels = json.table.cols.map(c => norm(c.label));
-  return json.table.rows.map(r => {
-    const o = {};
-    labels.forEach((lab, i) => {
-      const cell = r.c[i];
-      o[lab] = cell == null ? "" : (cell.v == null ? "" : cell.v);
-    });
-    return o;
-  });
+  const MARK = "setResponse(";
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const txt = await (await fetch(url, { cache: "no-store" })).text();
+    const m = txt.indexOf(MARK);
+    if (m >= 0) {
+      const json = JSON.parse(txt.substring(m + MARK.length, txt.lastIndexOf(")")));
+      if (json.status !== "error" && json.table) {
+        const labels = json.table.cols.map(c => norm(c.label));
+        return json.table.rows.map(r => {
+          const o = {};
+          labels.forEach((lab, i) => {
+            const cell = r.c[i];
+            o[lab] = cell == null ? "" : (cell.v == null ? "" : cell.v);
+          });
+          return o;
+        });
+      }
+    }
+    // got throttled or an HTML page — brief pause, then retry
+    await new Promise(res => setTimeout(res, 450 * (attempt + 1)));
+  }
+  throw new Error("Could not load tab: " + name);
 }
 
 async function loadLive() {
-  const [players, picks, bozos, parlays, votes] = await Promise.all([
-    fetchTab("Players"), fetchTab("Picks"), fetchTab("Bozo Results"), fetchTab("Parlays"), fetchTab("Votes"),
-  ]);
+  // sequential on purpose: a parallel burst of anonymous requests can get one throttled
+  const players = await fetchTab("Players");
+  const picks = await fetchTab("Picks");
+  const bozos = await fetchTab("Bozo Results");
+  const parlays = await fetchTab("Parlays");
+  const votes = await fetchTab("Votes");
   return {
     players: players.filter(p => norm(p["Player ID"])).map(p => ({
       id: low(p["Player ID"]), name: norm(p["Name"]) || norm(p["Player ID"]), team: norm(p["Fav Team"]),
