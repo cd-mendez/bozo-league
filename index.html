@@ -18,95 +18,88 @@
     --win: #0B6E2E;
   }
   * { box-sizing: border-box; border-radius: 0 !important; }
-  body { margin: 0; background: var(--paper); color: var(--ink); font-family: 'Barlow', 'Arial', sans-serif; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: 'Barlow', 'Arial', sans-serif;
+  }
   .display { font-family: 'Anton', 'Arial Black', 'Impact', sans-serif; font-weight: 400; text-transform: uppercase; letter-spacing: .01em; }
   .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
 
-  /* the ONLY circle on the entire site is the clown nose (click it) */
-  .nose { display: inline-block; width: .62em; height: .62em; background: var(--red); border-radius: 50% !important; border: 3px solid var(--ink); vertical-align: baseline; margin: 0 .03em; cursor: pointer; transition: transform .08s; }
-  .nose:active { transform: scale(.8); }
+  /* the ONLY circle on the entire site is the clown nose */
+  .nose { display: inline-block; width: .62em; height: .62em; background: var(--red); border-radius: 50% !important; border: 3px solid var(--ink); vertical-align: baseline; margin: 0 .03em; }
 
-  /* verdict stamp — rare, fast, mechanical */
-  @keyframes stamp { 0% { transform: scale(1.7) rotate(-4deg); opacity: 0; } 60% { transform: scale(.96) rotate(1deg); opacity: 1; } 100% { transform: scale(1) rotate(0); opacity: 1; } }
-  .stamp { animation: stamp .28s cubic-bezier(.2, 1.4, .4, 1) both; }
-  .stamp-late { animation-delay: .14s; }
-  @media (prefers-reduced-motion: reduce) { .ticker-inner, .stamp, .stamp-late { animation: none !important; } }
-
+  /* ---------- masthead ---------- */
   header { border-bottom: 4px solid var(--ink); background: var(--card); }
   .mast { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; gap: 12px; flex-wrap: wrap; }
   .mast h1 { margin: 0; font-size: clamp(34px, 6vw, 56px); line-height: .95; }
-  .mast-right { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
   .season-tag { font-weight: 900; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; border: 2px solid var(--ink); background: var(--paper); padding: 8px 12px; }
   .season-tag b { color: var(--red); }
-  .src-tag { font-weight: 900; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; padding: 6px 10px; border: 2px solid var(--ink); }
-  .src-live { background: var(--win); color: #fff; }
-  .src-demo { background: var(--ink); color: #fff; }
-  .src-err { background: var(--red); color: #fff; }
   nav { display: flex; gap: 0; flex-wrap: wrap; border-top: 2px solid var(--ink); }
   nav a { font-weight: 900; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; text-decoration: none; color: var(--ink); padding: 10px 16px; border-right: 2px solid var(--ink); }
   nav a:first-child { border-left: 2px solid var(--ink); }
   nav a.active, nav a:hover { background: var(--red); color: #fff; }
 
+  /* ---------- ticker ---------- */
   .ticker { background: var(--ink); color: #fff; overflow: hidden; white-space: nowrap; border-bottom: 4px solid var(--ink); }
   .ticker-inner { display: inline-block; padding: 8px 0; font-weight: 800; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; animation: tick 28s linear infinite; }
   .ticker-inner span { margin: 0 24px; }
-  .ticker-inner .honk { color: #FF5252; }
+  .ticker-inner .honk { color: var(--red); }
   @keyframes tick { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
+  /* ---------- section labels ---------- */
   .sec { display: flex; justify-content: space-between; align-items: baseline; margin: 44px 0 16px; border-bottom: 2px solid var(--ink); padding-bottom: 8px; }
   .sec .label { font-weight: 900; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: var(--red); }
   .sec .sub { font-weight: 800; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
 
+  /* ---------- bozo hero ---------- */
   .hero { margin-top: 36px; border: 4px solid var(--ink); background: var(--card); box-shadow: 14px 14px 0 var(--red); position: relative; overflow: hidden; }
-  .hero.pending { box-shadow: 14px 14px 0 var(--ink); }
   .hero-dots { position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(214,0,28,.10) 7px, transparent 8px); background-size: 46px 46px; pointer-events: none; }
   .hero-inner { position: relative; padding: 34px 38px; display: flex; flex-wrap: wrap; gap: 28px; align-items: center; justify-content: space-between; }
   .hero .kicker { font-weight: 900; font-size: 13px; letter-spacing: .22em; text-transform: uppercase; color: var(--red); display: block; margin-bottom: 6px; }
-  .hero .who { font-size: clamp(48px, 11vw, 110px); line-height: .9; margin: 0; }
-  .hero .why { font-weight: 700; color: var(--muted); max-width: 460px; font-size: 15px; line-height: 1.5; margin-top: 12px; }
+  .hero .who { font-size: clamp(56px, 11vw, 110px); line-height: .9; margin: 0; }
+  .hero .why { font-weight: 700; color: var(--muted); max-width: 420px; font-size: 15px; line-height: 1.5; margin-top: 12px; }
   .hero .badge { border: 4px solid var(--ink); background: var(--ink); color: #fff; padding: 22px 26px; text-align: center; min-width: 210px; }
-  .hero .badge .big { font-size: 56px; line-height: 1; display: block; }
+  .hero .badge .big { font-size: 64px; line-height: 1; display: block; }
   .hero .badge .cap { font-weight: 900; font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: #fff; display: block; margin-top: 8px; }
-  .hero .badge .cap b { color: #FF5252; }
+  .hero .badge .cap b { color: var(--red); }
 
   .verdict { border: 2px solid var(--ink); border-left: 10px solid var(--red); background: var(--card); padding: 12px 16px; margin-top: 22px; font-weight: 900; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; }
 
+  /* ---------- slates ---------- */
   .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
   .slate { border: 3px solid var(--ink); background: var(--card); box-shadow: 8px 8px 0 var(--ink); }
-  .slate-head { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--ink); padding: 12px 16px; background: var(--paper); gap: 8px; }
+  .slate-head { display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--ink); padding: 12px 16px; background: var(--paper); }
   .slate-head .t { font-size: 22px; }
-  .parlay-chip { font-weight: 900; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; padding: 6px 10px; border: 2px solid var(--ink); white-space: nowrap; }
+  .parlay-chip { font-weight: 900; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; padding: 6px 10px; border: 2px solid var(--ink); }
   .parlay-dead { background: var(--red); color: #fff; }
   .parlay-cash { background: var(--win); color: #fff; }
-  .parlay-live { background: var(--ink); color: #fff; }
   .pick-row { display: flex; align-items: center; gap: 10px; padding: 11px 16px; border-bottom: 1px solid var(--ink); font-weight: 700; font-size: 14px; }
   .pick-row:last-child { border-bottom: none; }
-  .pick-row .name { width: 68px; font-weight: 900; text-transform: uppercase; font-size: 12px; letter-spacing: .06em; flex-shrink: 0; }
-  .pick-row .bet { flex: 1; min-width: 0; }
+  .pick-row .name { width: 64px; font-weight: 900; text-transform: uppercase; font-size: 12px; letter-spacing: .06em; }
+  .pick-row .bet { flex: 1; }
   .pick-row .odds { color: var(--muted); font-weight: 800; font-size: 12px; }
-  .empty-row { padding: 22px 16px; font-weight: 800; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); text-align: center; }
-  .tag { font-weight: 900; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; padding: 3px 6px; border: 2px solid var(--ink); background: var(--paper); white-space: nowrap; }
+  .tag { font-weight: 900; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; padding: 3px 6px; border: 2px solid var(--ink); background: var(--paper); }
   .tag.lock { background: var(--ink); color: #fff; }
-  .tag.homer { background: var(--red); color: #fff; }
+  .tag.homer { background: var(--red); color: #fff; border-color: var(--ink); }
   .res { width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center; font-weight: 900; font-size: 13px; border: 2px solid var(--ink); flex-shrink: 0; }
   .res.w { background: var(--card); }
   .res.l { background: var(--red); color: #fff; }
   .res.p { background: var(--muted); color: #fff; }
-  .res.tbd { border-style: dashed; color: var(--muted); font-size: 10px; }
 
+  /* ---------- bozo race ---------- */
   .race { border: 4px solid var(--ink); background: var(--card); box-shadow: 14px 14px 0 var(--ink); }
   .race-row { display: flex; align-items: center; gap: 18px; padding: 16px 22px; border-bottom: 2px solid var(--ink); }
   .race-row:last-child { border-bottom: none; }
-  .race-row .rank { font-size: 26px; width: 40px; color: var(--muted); flex-shrink: 0; }
+  .race-row .rank { font-size: 26px; width: 40px; color: var(--muted); }
   .race-row.leader { background: var(--paper); }
   .race-row.leader .rank { color: var(--red); }
   .race-row .rname { font-size: 24px; width: 130px; }
-  .race-row .squares { display: flex; gap: 6px; flex: 1; flex-wrap: wrap; }
+  .race-row .squares { display: flex; gap: 6px; flex: 1; }
   .race-row .sq { width: 22px; height: 22px; background: var(--red); border: 2px solid var(--ink); }
   .race-row .count { font-size: 34px; width: 50px; text-align: right; }
-  .race-row .note { font-weight: 800; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); width: 180px; text-align: right; }
+  .race-row .note { font-weight: 800; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); width: 160px; text-align: right; }
 
-  .board-scroll { overflow-x: auto; }
+  /* ---------- leaderboard ---------- */
   .board { width: 100%; border-collapse: collapse; border: 3px solid var(--ink); background: var(--card); box-shadow: 8px 8px 0 var(--ink); }
   .board th { background: var(--ink); color: #fff; font-weight: 900; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; padding: 10px 8px; text-align: center; }
   .board td { border-bottom: 1px solid var(--ink); padding: 10px 8px; text-align: center; font-weight: 700; font-size: 14px; }
@@ -116,30 +109,27 @@
   .board .cold { color: var(--red); font-weight: 900; }
   .board .love { color: var(--blue); font-weight: 900; }
 
+  /* ---------- shame teaser ---------- */
   .shame { border: 4px solid var(--ink); background: var(--ink); color: #fff; box-shadow: 14px 14px 0 var(--red); padding: 30px 34px; position: relative; overflow: hidden; }
   .shame-dots { position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(255,255,255,.06) 7px, transparent 8px); background-size: 46px 46px; pointer-events: none; }
-  .shame .kicker { font-weight: 900; font-size: 12px; letter-spacing: .22em; text-transform: uppercase; color: #FF5252; }
-  .shame blockquote { font-family: 'Anton', sans-serif; font-size: clamp(24px, 4.5vw, 42px); text-transform: uppercase; line-height: 1.08; margin: 14px 0 10px; }
+  .shame .kicker { font-weight: 900; font-size: 12px; letter-spacing: .22em; text-transform: uppercase; color: var(--red); }
+  .shame blockquote { font-family: 'Anton', sans-serif; font-size: clamp(26px, 4.5vw, 44px); text-transform: uppercase; line-height: 1.05; margin: 14px 0 10px; }
   .shame .attr { font-weight: 800; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: #cfcabf; }
-  .shame .attr b { color: #FF5252; }
+  .shame .attr b { color: var(--red); }
+  .shame a { display: inline-block; margin-top: 18px; font-weight: 900; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: #fff; text-decoration: none; border: 2px solid #fff; padding: 10px 16px; }
+  .shame a:hover { background: var(--red); border-color: var(--red); }
 
+  /* ---------- footer ---------- */
   footer { margin-top: 56px; border-top: 4px solid var(--ink); background: var(--card); }
   .foot { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; gap: 12px; flex-wrap: wrap; font-weight: 900; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; }
-  .rockchalk { background: var(--blue); color: #fff; border: 2px solid var(--ink); padding: 6px 12px; cursor: pointer; user-select: none; }
-  .rockchalk:active { transform: scale(.95); }
-
-  /* blue mode — the Rock Chalk switch. Everything crimson goes Jayhawk blue; the chip flips crimson to switch back. */
-  body.bluemode { --red: #0051BA; }
-  body.bluemode .hero-dots { background-image: radial-gradient(circle, rgba(0,81,186,.10) 7px, transparent 8px); }
-  body.bluemode .ticker-inner .honk, body.bluemode .shame .kicker, body.bluemode .shame .attr b,
-  body.bluemode .hero .badge .cap b { color: #6FA8FF; }
-  body.bluemode .rockchalk { background: #D6001C; }
+  .rockchalk { background: var(--blue); color: #fff; border: 2px solid var(--ink); padding: 6px 12px; }
 
   @media (max-width: 640px) {
     .race-row .note { display: none; }
     .race-row .rname { width: auto; flex: 1; }
     .race-row .squares { display: none; }
     .hero-inner { padding: 24px 20px; }
+    .board .hide-sm { display: none; }
   }
 </style>
 </head>
@@ -149,34 +139,110 @@
   <div class="wrap">
     <div class="mast">
       <h1 class="display">The B<span class="nose"></span>ZO League</h1>
-      <div class="mast-right">
-        <span id="src-tag" class="src-tag src-demo">Demo Data</span>
-        <div class="season-tag" id="season-tag">Loading…</div>
-      </div>
+      <div class="season-tag">2026 Season <b>// Week 2</b></div>
     </div>
   </div>
   <nav class="wrap" style="padding:0 20px 14px;">
-    <a class="active" href="#">Home</a><a href="#race">Bozo Race</a><a href="#leaderboard">Leaderboard</a><a href="#shame">Hall of Shame</a><a href="#">Bylaws</a>
+    <a class="active" href="#">Home</a><a href="#">Bozo Race</a><a href="#">Leaderboard</a><a href="#">Profiles</a><a href="#">Hall of Shame</a><a href="#">Archive</a><a href="#">Bylaws</a>
   </nav>
 </header>
 
-<div class="ticker"><div class="ticker-inner" id="ticker"></div></div>
+<div class="ticker"><div class="ticker-inner">
+  <span>🤡 <b class="honk">HONK HONK:</b> Chase is your Week 2 Bozo</span><span>💀 Both homer locks died Sunday</span><span>💰 Saturday parlay CASHED +$337.50</span><span>🔒 Chase is 2–2 on locks and still locking</span><span>🧊 Jordan has never declared a lock — coward or genius?</span><span>📉 Mitch: Cardinals +7 never had a chance</span>
+  <span>🤡 <b class="honk">HONK HONK:</b> Chase is your Week 2 Bozo</span><span>💀 Both homer locks died Sunday</span><span>💰 Saturday parlay CASHED +$337.50</span><span>🔒 Chase is 2–2 on locks and still locking</span><span>🧊 Jordan has never declared a lock — coward or genius?</span><span>📉 Mitch: Cardinals +7 never had a chance</span>
+</div></div>
 
 <main class="wrap">
-  <div id="hero-slot"></div>
-  <div class="verdict" id="verdict" style="display:none;"></div>
 
-  <div class="sec"><span class="label">01 // This Weekend</span><span class="sub" id="weekend-sub"></span></div>
-  <div class="grid2" id="slates"></div>
+  <!-- BOZO OF THE WEEK -->
+  <div class="hero">
+    <div class="hero-dots"></div>
+    <div class="hero-inner">
+      <div>
+        <span class="kicker">🤡 Bozo of the Week // Wk 2 Sunday</span>
+        <h2 class="display who">Chase</h2>
+        <p class="why">Locked the Cowboys −2.5. A homer pick. As his LOCK. It lost. Convicted 3–2 over Marc in a contentious group vote.</p>
+      </div>
+      <div class="badge">
+        <span class="display big">3–2</span>
+        <span class="cap">Vote Verdict <b>// Guilty</b></span>
+      </div>
+    </div>
+  </div>
+  <div class="verdict">Week 2 Verdict: Both homer locks died. Chase wears it. Honk honk.</div>
 
-  <div class="sec" id="race"><span class="label">02 // Bozo of the Year Race</span><span class="sub">Most Bozos wins* (*loses)</span></div>
-  <div class="race" id="race-body"></div>
+  <!-- THIS WEEKEND -->
+  <div class="sec"><span class="label">01 // This Weekend</span><span class="sub">Week 2 · Two slates · One $25 parlay each</span></div>
+  <div class="grid2">
+    <div class="slate">
+      <div class="slate-head"><span class="display t">Saturday · CFB</span><span class="parlay-chip parlay-cash">Parlay +$337.50</span></div>
+      <div class="pick-row"><span class="name">Marc</span><span class="bet">Georgia ML <span class="odds">−150</span></span><span class="res w">W</span></div>
+      <div class="pick-row"><span class="name">Chase</span><span class="bet">Texas −6.5 <span class="odds">−110</span></span><span class="tag lock">🔒 Lock</span><span class="res w">W</span></div>
+      <div class="pick-row"><span class="name">Jordan</span><span class="bet">Notre Dame −3 <span class="odds">−115</span></span><span class="res w">W</span></div>
+      <div class="pick-row"><span class="name">Mitch</span><span class="bet">Utah +4.5 <span class="odds">−105</span></span><span class="res w">W</span></div>
+      <div class="pick-row"><span class="name">Manny</span><span class="bet">LSU ML <span class="odds">−125</span></span><span class="res w">W</span></div>
+    </div>
+    <div class="slate">
+      <div class="slate-head"><span class="display t">Sunday · NFL</span><span class="parlay-chip parlay-dead">Parlay ☠ Dead</span></div>
+      <div class="pick-row"><span class="name">Marc</span><span class="bet">Broncos ML <span class="odds">−160</span></span><span class="tag lock">🔒 Lock</span><span class="tag homer">Homer</span><span class="res l">L</span></div>
+      <div class="pick-row"><span class="name">Chase</span><span class="bet">Cowboys −2.5 <span class="odds">−110</span></span><span class="tag lock">🔒 Lock</span><span class="tag homer">Homer</span><span class="res l">L</span></div>
+      <div class="pick-row"><span class="name">Jordan</span><span class="bet">Bills −3.5 <span class="odds">−110</span></span><span class="res w">W</span></div>
+      <div class="pick-row"><span class="name">Mitch</span><span class="bet">49ers ML <span class="odds">−135</span></span><span class="tag lock">🔒 Lock</span><span class="res w">W</span></div>
+      <div class="pick-row"><span class="name">Manny</span><span class="bet">Chiefs −3 <span class="odds">−110</span></span><span class="tag lock">🔒 Lock</span><span class="tag homer">Homer</span><span class="res w">W</span></div>
+    </div>
+  </div>
 
-  <div class="sec" id="leaderboard"><span class="label">03 // Leaderboard</span><span class="sub" id="board-sub"></span></div>
-  <div class="board-scroll"><table class="board" id="board-body"></table></div>
+  <!-- BOZO OF THE YEAR RACE -->
+  <div class="sec"><span class="label">02 // Bozo of the Year Race</span><span class="sub">Most Bozos wins* (*loses)</span></div>
+  <div class="race">
+    <div class="race-row leader">
+      <span class="display rank">1</span><span class="display rname">Chase</span>
+      <span class="squares"><span class="sq"></span><span class="sq"></span></span>
+      <span class="display count">2</span><span class="note">1 solo · on pace for 18 🤡</span>
+    </div>
+    <div class="race-row">
+      <span class="display rank">2</span><span class="display rname">Mitch</span>
+      <span class="squares"><span class="sq"></span></span>
+      <span class="display count">1</span><span class="note">1 solo · homer casualty</span>
+    </div>
+    <div class="race-row">
+      <span class="display rank">T3</span><span class="display rname">Marc</span>
+      <span class="squares"></span>
+      <span class="display count">0</span><span class="note">Survived a 3–2 vote</span>
+    </div>
+    <div class="race-row">
+      <span class="display rank">T3</span><span class="display rname">Jordan</span>
+      <span class="squares"></span>
+      <span class="display count">0</span><span class="note">Untouched · 4–0</span>
+    </div>
+    <div class="race-row">
+      <span class="display rank">T3</span><span class="display rname">Manny</span>
+      <span class="squares"></span>
+      <span class="display count">0</span><span class="note">Clean · 3–0–1</span>
+    </div>
+  </div>
 
-  <div class="sec" id="shame"><span class="label">04 // From the Hall of Shame</span><span class="sub">Receipts are forever</span></div>
-  <div class="shame" id="shame-body"></div>
+  <!-- LEADERBOARD -->
+  <div class="sec"><span class="label">03 // Leaderboard</span><span class="sub">Through Week 2</span></div>
+  <table class="board">
+    <tr><th style="text-align:left;padding-left:14px;">Player</th><th>W–L–P</th><th>Win %</th><th>Lock Rec</th><th class="hide-sm">Locks Declared</th><th class="hide-sm">Homer Rec</th><th>Love</th><th>Hate</th></tr>
+    <tr><td class="pname">Jordan</td><td class="hot">4–0–0</td><td>100%</td><td>0–0</td><td class="hide-sm">0 🧊</td><td class="hide-sm">1–0</td><td class="love">3</td><td>0</td></tr>
+    <tr><td class="pname">Manny</td><td class="hot">3–0–1</td><td>100%</td><td>2–0</td><td class="hide-sm">2</td><td class="hide-sm">1–0</td><td class="love">1</td><td>0</td></tr>
+    <tr><td class="pname">Marc</td><td>3–1–0</td><td>75%</td><td>1–1</td><td class="hide-sm">2</td><td class="hide-sm">1–1</td><td class="love">1</td><td>0</td></tr>
+    <tr><td class="pname">Mitch</td><td>3–1–0</td><td>75%</td><td>2–0</td><td class="hide-sm">2</td><td class="hide-sm">0–1</td><td class="love">0</td><td>1</td></tr>
+    <tr><td class="pname">Chase</td><td class="cold">2–2–0</td><td>50%</td><td class="cold">2–2</td><td class="hide-sm">4 🚨</td><td class="hide-sm">1–1</td><td class="love">0</td><td class="cold">4</td></tr>
+  </table>
+
+  <!-- HALL OF SHAME TEASER -->
+  <div class="sec"><span class="label">04 // From the Hall of Shame</span><span class="sub">Receipts are forever</span></div>
+  <div class="shame">
+    <div class="shame-dots"></div>
+    <span class="kicker">Legendary Quote // Week 1</span>
+    <blockquote>“Bama at home? Free money.”</blockquote>
+    <span class="attr"><b>— Chase</b>, moments before losing by 21 · Declared it a LOCK · Solo Bozo</span>
+    <br><a href="#">Enter the Hall of Shame →</a>
+  </div>
+
 </main>
 
 <footer>
@@ -186,379 +252,5 @@
   </div>
 </footer>
 
-<script>
-/* =====================================================================
-   CONFIG — paste your Google Sheet ID between the quotes to go live.
-   (The long string in the sheet URL between /d/ and /edit.)
-   The Sheet must be shared: Anyone with the link -> Viewer.
-   ===================================================================== */
-const SHEET_ID = "1OdFtqM4lmmMXC5HImZKVFPzrinpKO1HFhn7YLynAEb0";
-
-const SLATE_ORDER = { "Saturday": 0, "Sunday": 1 };
-const SEASON_WEEKS = 18; // for the "on pace" joke
-
-/* ---------------- demo data (used until SHEET_ID is set) ------------- */
-const DEMO = {
-  players: [
-    { id: "marc", name: "Marc", team: "Broncos" },
-    { id: "chase", name: "Chase", team: "Cowboys" },
-    { id: "jordan", name: "Jordan", team: "Chiefs" },
-    { id: "mitch", name: "Mitch", team: "Cardinals" },
-    { id: "manny", name: "Manny", team: "Chiefs" },
-  ],
-  picks: [
-    [2026,1,"Saturday","marc","CFB","Kansas -3.5",-110,"Win","Yes","","Rock Chalk (no homer tax)"],
-    [2026,1,"Saturday","chase","CFB","Alabama -6.5",-110,"Loss","Yes","","Locked it. Lost by 21. Free money."],
-    [2026,1,"Saturday","jordan","CFB","Texas ML",-140,"Win","","",""],
-    [2026,1,"Saturday","mitch","CFB","Colorado +3",-105,"Win","Yes","",""],
-    [2026,1,"Saturday","manny","CFB","Oregon ML",-130,"Win","Yes","",""],
-    [2026,1,"Sunday","marc","NFL","Broncos +3",-110,"Win","","Yes",""],
-    [2026,1,"Sunday","chase","NFL","Cowboys +3",-110,"Win","Yes","Yes",""],
-    [2026,1,"Sunday","jordan","NFL","Chiefs ML",-145,"Win","","Yes",""],
-    [2026,1,"Sunday","mitch","NFL","Cardinals +7",-110,"Loss","","Yes","Homer tax applies."],
-    [2026,1,"Sunday","manny","NFL","Ravens -3",-110,"Push","","","Landed on 3."],
-    [2026,2,"Saturday","marc","CFB","Georgia ML",-150,"Win","","",""],
-    [2026,2,"Saturday","chase","CFB","Texas -6.5",-110,"Win","Yes","",""],
-    [2026,2,"Saturday","jordan","CFB","Notre Dame -3",-115,"Win","","",""],
-    [2026,2,"Saturday","mitch","CFB","Utah +4.5",-105,"Win","","",""],
-    [2026,2,"Saturday","manny","CFB","LSU ML",-125,"Win","","",""],
-    [2026,2,"Sunday","marc","NFL","Broncos ML",-160,"Loss","Yes","Yes","Biggest favorite to lose so far"],
-    [2026,2,"Sunday","chase","NFL","Cowboys -2.5",-110,"Loss","Yes","Yes","Lock of the week, folks"],
-    [2026,2,"Sunday","jordan","NFL","Bills -3.5",-110,"Win","","",""],
-    [2026,2,"Sunday","mitch","NFL","49ers ML",-135,"Win","Yes","",""],
-    [2026,2,"Sunday","manny","NFL","Chiefs -3",-110,"Win","Yes","Yes",""],
-  ],
-  bozos: [
-    [2026,1,"Saturday","chase","Solo","","Only loss on the slate, killed the parlay"],
-    [2026,1,"Sunday","mitch","Solo","","Only loss — homer Cardinals pick"],
-    [2026,2,"Sunday","chase","Voted",3,"Beat Marc 3-2; homer Cowboys LOCK lost, double shame"],
-  ],
-  parlays: [
-    [2026,1,"Saturday",25,1280,"Loss",0],
-    [2026,1,"Sunday",25,950,"Loss",0],
-    [2026,2,"Saturday",25,1350,"Win",362.50],
-    [2026,2,"Sunday",25,1195,"Loss",0],
-  ],
-  votes: [
-    [2026,1,"Saturday","marc","Love","jordan"],[2026,1,"Saturday","chase","Love","marc"],
-    [2026,1,"Saturday","jordan","Love","manny"],[2026,1,"Saturday","mitch","Love","jordan"],
-    [2026,1,"Saturday","manny","Love","jordan"],[2026,1,"Saturday","marc","Hate","chase"],
-    [2026,1,"Saturday","chase","Hate","mitch"],[2026,1,"Saturday","jordan","Hate","chase"],
-    [2026,1,"Saturday","mitch","Hate","chase"],[2026,1,"Saturday","manny","Hate","chase"],
-    [2026,2,"Sunday","marc","Bozo","chase"],[2026,2,"Sunday","chase","Bozo","marc"],
-    [2026,2,"Sunday","jordan","Bozo","chase"],[2026,2,"Sunday","mitch","Bozo","chase"],
-    [2026,2,"Sunday","manny","Bozo","marc"],
-  ],
-};
-
-/* ---------------- tiny helpers ---------------- */
-const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
-const norm = s => String(s ?? "").trim();
-const low = s => norm(s).toLowerCase();
-const fmtOdds = o => (o === "" || o == null || isNaN(o)) ? "" : (o > 0 ? "+" + o : String(o));
-const money = n => "$" + Number(n).toFixed(2).replace(/\.00$/, "");
-
-/* ---------------- Google Sheets (gviz) loader ---------------- */
-async function fetchTab(name) {
-  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&headers=1&sheet=${encodeURIComponent(name)}`;
-  const MARK = "setResponse(";
-  for (let attempt = 0; attempt < 3; attempt++) {
-    const txt = await (await fetch(url, { cache: "no-store" })).text();
-    const m = txt.indexOf(MARK);
-    if (m >= 0) {
-      const json = JSON.parse(txt.substring(m + MARK.length, txt.lastIndexOf(")")));
-      if (json.status !== "error" && json.table) {
-        const labels = json.table.cols.map(c => norm(c.label));
-        return json.table.rows.map(r => {
-          const o = {};
-          labels.forEach((lab, i) => {
-            const cell = r.c[i];
-            o[lab] = cell == null ? "" : (cell.v == null ? "" : cell.v);
-          });
-          return o;
-        });
-      }
-    }
-    // got throttled or an HTML page — brief pause, then retry
-    await new Promise(res => setTimeout(res, 450 * (attempt + 1)));
-  }
-  throw new Error("Could not load tab: " + name);
-}
-
-async function loadLive() {
-  // sequential on purpose: a parallel burst of anonymous requests can get one throttled
-  const players = await fetchTab("Players");
-  const picks = await fetchTab("Picks");
-  const bozos = await fetchTab("Bozo Results");
-  const parlays = await fetchTab("Parlays");
-  const votes = await fetchTab("Votes");
-  return {
-    players: players.filter(p => norm(p["Player ID"])).map(p => ({
-      id: low(p["Player ID"]), name: norm(p["Name"]) || norm(p["Player ID"]), team: norm(p["Fav Team"]),
-      active: low(p["Active"]) !== "no",
-    })).filter(p => p.active),
-    picks: picks.filter(r => r["Season"] !== "" && norm(r["Player"])).map(r => ({
-      season: +r["Season"], week: +r["Week"], slate: norm(r["Slate"]), player: low(r["Player"]),
-      league: norm(r["League"]), pick: norm(r["Pick"]), odds: r["Odds"] === "" ? "" : +r["Odds"],
-      result: low(r["Result"]), lock: low(r["Lock"]) === "yes", homer: low(r["Homer"]) === "yes",
-      notes: norm(r["Notes"]),
-    })),
-    bozos: bozos.filter(r => r["Season"] !== "" && norm(r["Bozo"])).map(r => ({
-      season: +r["Season"], week: +r["Week"], slate: norm(r["Slate"]), bozo: low(r["Bozo"]),
-      type: norm(r["Type"]), votesFor: r["Votes For"] === "" ? null : +r["Votes For"], reason: norm(r["Reason"]),
-    })),
-    parlays: parlays.filter(r => r["Season"] !== "").map(r => ({
-      season: +r["Season"], week: +r["Week"], slate: norm(r["Slate"]), stake: +r["Stake"] || 0,
-      odds: r["Total Odds"] === "" ? "" : +r["Total Odds"], result: low(r["Result"]), payout: +r["Payout"] || 0,
-    })),
-    votes: votes.filter(r => r["Season"] !== "" && norm(r["Voter"])).map(r => ({
-      season: +r["Season"], week: +r["Week"], slate: norm(r["Slate"]), voter: low(r["Voter"]),
-      type: low(r["Vote Type"]), votedFor: low(r["Voted For"]),
-    })),
-  };
-}
-
-function loadDemo() {
-  return {
-    players: DEMO.players.map(p => ({ ...p, active: true })),
-    picks: DEMO.picks.map(r => ({ season: r[0], week: r[1], slate: r[2], player: r[3], league: r[4], pick: r[5], odds: r[6], result: low(r[7]), lock: low(r[8]) === "yes", homer: low(r[9]) === "yes", notes: r[10] })),
-    bozos: DEMO.bozos.map(r => ({ season: r[0], week: r[1], slate: r[2], bozo: r[3], type: r[4], votesFor: r[5] === "" ? null : r[5], reason: r[6] })),
-    parlays: DEMO.parlays.map(r => ({ season: r[0], week: r[1], slate: r[2], stake: r[3], odds: r[4], result: low(r[5]), payout: r[6] })),
-    votes: DEMO.votes.map(r => ({ season: r[0], week: r[1], slate: r[2], voter: r[3], type: low(r[4]), votedFor: r[5] })),
-  };
-}
-
-/* ---------------- derive + render ---------------- */
-function render(d) {
-  const P = Object.fromEntries(d.players.map(p => [p.id, p]));
-  const nameOf = id => (P[id] && P[id].name) || id;
-
-  const seasons = d.picks.map(p => p.season);
-  const season = seasons.length ? Math.max(...seasons) : new Date().getFullYear();
-  const picks = d.picks.filter(p => p.season === season);
-  const bozos = d.bozos.filter(b => b.season === season);
-  const parlays = d.parlays.filter(p => p.season === season);
-  const votes = d.votes.filter(v => v.season === season);
-  const voterCount = d.players.length;
-
-  /* --- season tag --- */
-  const week = picks.length ? Math.max(...picks.map(p => p.week)) : 0;
-  document.getElementById("season-tag").innerHTML =
-    `${season} Season <b>// ${week ? "Week " + week : "Preseason"}</b>`;
-
-  /* --- current slate state --- */
-  const wkPicks = picks.filter(p => p.week === week);
-  const slates = ["Saturday", "Sunday"].map(name => {
-    const rows = wkPicks.filter(p => p.slate === name);
-    const graded = rows.length > 0 && rows.every(p => p.result !== "");
-    const losses = rows.filter(p => p.result === "loss").length;
-    const bozoRow = bozos.find(b => b.week === week && b.slate === name);
-    const parlay = parlays.find(p => p.week === week && p.slate === name);
-    return { name, rows, graded, losses, bozoRow, parlay };
-  });
-
-  const latest = [...slates].reverse().find(s => s.rows.length > 0);
-
-  /* --- hero --- */
-  let hero;
-  if (!latest) {
-    hero = { pending: true, kicker: "🤡 Preseason", who: "Soon.", why: "No picks yet. The sheet is armed, the forms are loaded, and somebody in this league is about to be historically wrong.", big: "2026", cap: "Season <b>// Loading</b>" };
-  } else if (!latest.graded) {
-    const alive = latest.rows.filter(p => p.result === "").length;
-    hero = { pending: true, kicker: `🤡 Bozo of the Week // Wk ${week} ${latest.name}`, who: "TBD", why: `Sweat in progress — ${alive} pick${alive === 1 ? "" : "s"} still alive on the ${latest.name} slate. Somebody's Sunday is about to get worse.`, big: "🔴 LIVE", cap: "Verdict <b>// Pending</b>" };
-  } else if (latest.bozoRow) {
-    const b = latest.bozoRow;
-    const isSolo = low(b.type).includes("solo");
-    const big = isSolo ? "SOLO" : (b.votesFor != null ? `${b.votesFor}–${voterCount - b.votesFor}` : "VOTED");
-    hero = { pending: false, kicker: `🤡 Bozo of the Week // Wk ${b.week} ${b.slate}`, who: nameOf(b.bozo), why: b.reason || "No reason recorded. The shame speaks for itself.", big, cap: isSolo ? "Automatic <b>// No Vote Needed</b>" : "Vote Verdict <b>// Guilty</b>" };
-  } else if (latest.losses === 0) {
-    hero = { pending: false, kicker: `Wk ${week} ${latest.name} // Clean Sweep`, who: "NOBODY", why: "Everyone won. No Bozo this slate. Congratulations, cowards.", big: "5-0", cap: "Slate <b>// Swept</b>" };
-  } else {
-    hero = { pending: true, kicker: `🤡 Bozo of the Week // Wk ${week} ${latest.name}`, who: "IN COURT", why: `${latest.losses} losers on the slate. The vote is live in the chat. May the worst man lose.`, big: "⚖️", cap: "Vote <b>// In Progress</b>" };
-  }
-  document.getElementById("hero-slot").innerHTML = `
-    <div class="hero${hero.pending ? " pending" : ""}">
-      <div class="hero-dots"></div>
-      <div class="hero-inner">
-        <div>
-          <span class="kicker">${esc(hero.kicker)}</span>
-          <h2 class="display who stamp">${esc(hero.who)}</h2>
-          <p class="why">${esc(hero.why)}</p>
-        </div>
-        <div class="badge stamp stamp-late"><span class="display big">${hero.big}</span><span class="cap">${hero.cap}</span></div>
-      </div>
-    </div>`;
-
-  /* --- verdict bar (only when both slates are settled) --- */
-  const verdictEl = document.getElementById("verdict");
-  if (latest && slates.every(s => s.rows.length === 0 || (s.graded && (s.bozoRow || s.losses === 0)))) {
-    const parts = slates.filter(s => s.rows.length).map(s =>
-      s.bozoRow ? `${s.name}: ${nameOf(s.bozoRow.bozo)}` : `${s.name}: no Bozo`);
-    verdictEl.textContent = `Week ${week} verdict — ${parts.join(" · ")}. Honk honk.`;
-    verdictEl.style.display = "";
-  } else { verdictEl.style.display = "none"; }
-
-  /* --- slates --- */
-  document.getElementById("weekend-sub").textContent = week ? `Week ${week} · Two slates · One $25 parlay each` : "Season not started";
-  document.getElementById("slates").innerHTML = slates.map(s => {
-    let chip = `<span class="parlay-chip">Parlay —</span>`;
-    if (s.parlay && s.parlay.result === "win") chip = `<span class="parlay-chip parlay-cash">Parlay +${money(s.parlay.payout - s.parlay.stake)}</span>`;
-    else if (s.parlay && s.parlay.result === "loss") chip = `<span class="parlay-chip parlay-dead">Parlay ☠ Dead</span>`;
-    else if (s.rows.length && !s.graded) chip = `<span class="parlay-chip parlay-live">Parlay 🔴 Live</span>`;
-    const league = s.name === "Saturday" ? "CFB" : "NFL";
-    const rows = s.rows.length ? s.rows.map(p => `
-      <div class="pick-row">
-        <span class="name">${esc(nameOf(p.player))}</span>
-        <span class="bet">${esc(p.pick)} <span class="odds">${fmtOdds(p.odds)}</span></span>
-        ${p.lock ? '<span class="tag lock">🔒 Lock</span>' : ""}
-        ${p.homer ? '<span class="tag homer">Homer</span>' : ""}
-        ${p.result === "win" ? '<span class="res w">W</span>' : p.result === "loss" ? '<span class="res l">L</span>' : p.result === "push" ? '<span class="res p">P</span>' : '<span class="res tbd">…</span>'}
-      </div>`).join("") :
-      `<div class="empty-row">Awaiting picks — form locks ${s.name === "Saturday" ? "11:00 AM" : "12:00 PM"} CT</div>`;
-    return `<div class="slate"><div class="slate-head"><span class="display t">${s.name} · ${league}</span>${chip}</div>${rows}</div>`;
-  }).join("");
-
-  /* --- race --- */
-  const counts = d.players.map(p => {
-    const mine = bozos.filter(b => b.bozo === p.id);
-    return { id: p.id, name: p.name, n: mine.length, solo: mine.filter(b => low(b.type).includes("solo")).length };
-  }).sort((a, b) => b.n - a.n || b.solo - a.solo);
-  const raceHtml = counts.map((c, i) => {
-    const tied = counts.filter(x => x.n === c.n).length > 1;
-    const rank = (tied ? "T" : "") + (counts.findIndex(x => x.n === c.n) + 1);
-    const pace = week > 0 && c.n > 0 ? Math.round(c.n / week * SEASON_WEEKS) : 0;
-    const note = c.n === 0 ? "clean — for now" : `${c.solo} solo${i === 0 && pace ? ` · on pace for ${pace} 🤡` : ""}`;
-    return `<div class="race-row${i === 0 && c.n > 0 ? " leader" : ""}">
-      <span class="display rank">${rank}</span><span class="display rname">${esc(c.name)}</span>
-      <span class="squares">${'<span class="sq"></span>'.repeat(c.n)}</span>
-      <span class="display count">${c.n}</span><span class="note">${esc(note)}</span></div>`;
-  }).join("");
-  document.getElementById("race-body").innerHTML = raceHtml || `<div class="race-row"><span class="note">No Bozos yet. It's early.</span></div>`;
-
-  /* --- leaderboard --- */
-  document.getElementById("board-sub").textContent = week ? `Through Week ${week}` : "";
-  const stats = d.players.map(p => {
-    const mine = picks.filter(x => x.player === p.id);
-    const w = mine.filter(x => x.result === "win").length;
-    const l = mine.filter(x => x.result === "loss").length;
-    const pu = mine.filter(x => x.result === "push").length;
-    const lw = mine.filter(x => x.lock && x.result === "win").length;
-    const ll = mine.filter(x => x.lock && x.result === "loss").length;
-    const decl = mine.filter(x => x.lock).length;
-    const hw = mine.filter(x => x.homer && x.result === "win").length;
-    const hl = mine.filter(x => x.homer && x.result === "loss").length;
-    const love = votes.filter(v => v.type === "love" && v.votedFor === p.id).length;
-    const hate = votes.filter(v => v.type === "hate" && v.votedFor === p.id).length;
-    return { name: p.name, w, l, pu, pct: w + l ? w / (w + l) : 0, lw, ll, decl, hw, hl, love, hate };
-  }).sort((a, b) => b.pct - a.pct || b.w - a.w);
-  const maxHate = Math.max(...stats.map(s => s.hate), 0);
-  const maxDecl = Math.max(...stats.map(s => s.decl), 0);
-  document.getElementById("board-body").innerHTML = `
-    <tr><th style="text-align:left;padding-left:14px;">Player</th><th>W–L–P</th><th>Win %</th><th>Lock Rec</th><th>Locks Declared</th><th>Homer Rec</th><th>Love</th><th>Hate</th></tr>` +
-    stats.map(s => `<tr>
-      <td class="pname">${esc(s.name)}</td>
-      <td class="${s.l === 0 && s.w > 0 ? "hot" : s.pct < .5 && s.l > 0 ? "cold" : ""}">${s.w}–${s.l}–${s.pu}</td>
-      <td>${Math.round(s.pct * 100)}%</td>
-      <td class="${s.ll > s.lw ? "cold" : ""}">${s.lw}–${s.ll}</td>
-      <td>${s.decl}${s.decl === 0 && week > 1 ? " 🧊" : s.decl === maxDecl && s.decl >= 4 ? " 🚨" : ""}</td>
-      <td>${s.hw}–${s.hl}</td>
-      <td class="love">${s.love}</td>
-      <td class="${s.hate === maxHate && s.hate > 0 ? "cold" : ""}">${s.hate}</td>
-    </tr>`).join("");
-
-  /* --- hall of shame teaser --- */
-  const lastBozo = [...bozos].sort((a, b) => a.week - b.week || SLATE_ORDER[a.slate] - SLATE_ORDER[b.slate]).pop();
-  document.getElementById("shame-body").innerHTML = lastBozo ? `
-    <div class="shame-dots"></div>
-    <span class="kicker">Latest Entry // Week ${lastBozo.week} ${esc(lastBozo.slate)}</span>
-    <blockquote>${esc(lastBozo.reason || nameOf(lastBozo.bozo) + " did it again.")}</blockquote>
-    <span class="attr"><b>— The case against ${esc(nameOf(lastBozo.bozo))}</b> · ${esc(lastBozo.type)} Bozo</span>` : `
-    <div class="shame-dots"></div>
-    <span class="kicker">The Hall Awaits</span>
-    <blockquote>No shame recorded yet. This page will not stay empty long.</blockquote>
-    <span class="attr"><b>— History</b></span>`;
-
-  /* --- ticker --- */
-  const lines = [];
-  if (lastBozo) lines.push(`🤡 <b class="honk">HONK HONK:</b> ${esc(nameOf(lastBozo.bozo))} is your Wk ${lastBozo.week} ${esc(lastBozo.slate)} Bozo`);
-  slates.forEach(s => {
-    if (s.parlay && s.parlay.result === "win") lines.push(`💰 ${s.name} parlay CASHED +${money(s.parlay.payout - s.parlay.stake)}`);
-    if (s.parlay && s.parlay.result === "loss") lines.push(`💀 ${s.name} parlay died`);
-  });
-  const iceman = stats.find(s => s.decl === 0 && week > 1);
-  if (iceman) lines.push(`🧊 ${esc(iceman.name)} has never declared a lock — coward or genius?`);
-  const villain = stats.find(s => s.hate === maxHate && s.hate > 0);
-  if (villain) lines.push(`😈 Public Enemy: ${esc(villain.name)} with ${villain.hate} hate votes`);
-  const hot = stats[0];
-  if (hot && hot.w > 0) lines.push(`🔥 ${esc(hot.name)} leads the league at ${Math.round(hot.pct * 100)}%`);
-  if (!lines.length) lines.push(`🤡 Season loading — sharpen your worst takes`);
-  const strip = lines.map(l => `<span>${l}</span>`).join("");
-  document.getElementById("ticker").innerHTML = strip + strip;
-}
-
-/* ---------------- the honk (undocumented; let them find it) ---------------- */
-document.querySelector(".nose").addEventListener("click", () => {
-  const ctx = new (window.AudioContext || window.webkitAudioContext)();
-  const toot = (t0, f0, f1, dur) => {
-    const o = ctx.createOscillator(), g = ctx.createGain();
-    o.type = "sawtooth";
-    o.frequency.setValueAtTime(f0, t0);
-    o.frequency.exponentialRampToValueAtTime(f1, t0 + dur);
-    g.gain.setValueAtTime(0.0001, t0);
-    g.gain.exponentialRampToValueAtTime(0.22, t0 + 0.02);
-    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
-    o.connect(g).connect(ctx.destination);
-    o.start(t0); o.stop(t0 + dur + 0.02);
-  };
-  const now = ctx.currentTime;
-  toot(now, 340, 250, 0.16);          // honk
-  toot(now + 0.2, 320, 210, 0.22);    // honk
-});
-
-/* ---------------- blue mode (the Rock Chalk switch) ---------------- */
-const chirp = () => {
-  const ctx = new (window.AudioContext || window.webkitAudioContext)();
-  const tweet = (t0) => {
-    const o = ctx.createOscillator(), g = ctx.createGain();
-    o.type = "sine";
-    o.frequency.setValueAtTime(2100, t0);
-    o.frequency.exponentialRampToValueAtTime(3400, t0 + 0.09);
-    g.gain.setValueAtTime(0.0001, t0);
-    g.gain.exponentialRampToValueAtTime(0.12, t0 + 0.015);
-    g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.1);
-    o.connect(g).connect(ctx.destination);
-    o.start(t0); o.stop(t0 + 0.12);
-  };
-  tweet(ctx.currentTime);            // chirp
-  tweet(ctx.currentTime + 0.13);     // chirp
-};
-const rockchalk = document.querySelector(".rockchalk");
-const applyMode = on => document.body.classList.toggle("bluemode", on);
-try { applyMode(localStorage.getItem("bozomode") === "blue"); } catch (e) {}
-rockchalk.addEventListener("click", () => {
-  const on = !document.body.classList.contains("bluemode");
-  applyMode(on);
-  try { localStorage.setItem("bozomode", on ? "blue" : "red"); } catch (e) {}
-  chirp();
-});
-
-/* ---------------- boot ---------------- */
-(async () => {
-  const tag = document.getElementById("src-tag");
-  if (!SHEET_ID) {
-    tag.textContent = "Demo Data"; tag.className = "src-tag src-demo";
-    render(loadDemo());
-    return;
-  }
-  try {
-    render(await loadLive());
-    tag.textContent = "Live"; tag.className = "src-tag src-live";
-  } catch (e) {
-    console.error("Sheet load failed:", e);
-    tag.textContent = "Sheet Unreachable"; tag.className = "src-tag src-err";
-    render(loadDemo());
-  }
-})();
-</script>
 </body>
 </html>
