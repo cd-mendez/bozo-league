@@ -86,7 +86,6 @@
   .pick-row .odds { color: var(--muted); font-weight: 800; font-size: 12px; }
   .empty-row { padding: 22px 16px; font-weight: 800; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); text-align: center; }
   .tag { font-weight: 900; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; padding: 3px 6px; border: 2px solid var(--ink); background: var(--paper); white-space: nowrap; }
-  .tag.lock { background: var(--ink); color: #fff; }
   .tag.homer { background: var(--red); color: #fff; }
   .res { width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center; font-weight: 900; font-size: 13px; border: 2px solid var(--ink); flex-shrink: 0; }
   .res.w { background: var(--card); }
@@ -410,11 +409,10 @@ function render(d) {
       <div class="pick-row">
         <span class="name">${esc(nameOf(p.player))}</span>
         <span class="bet">${esc(p.pick)} <span class="odds">${fmtOdds(p.odds)}</span></span>
-        ${p.lock ? '<span class="tag lock">🔒 Lock</span>' : ""}
         ${p.homer ? '<span class="tag homer">Homer</span>' : ""}
         ${p.result === "win" ? '<span class="res w">W</span>' : p.result === "loss" ? '<span class="res l">L</span>' : p.result === "push" ? '<span class="res p">P</span>' : '<span class="res tbd">…</span>'}
       </div>`).join("") :
-      `<div class="empty-row">Awaiting picks — form locks ${s.name === "Saturday" ? "11:00 AM" : "12:00 PM"} CT</div>`;
+      `<div class="empty-row">Awaiting picks — deadline is ${s.name === "Saturday" ? "11:00 AM" : "12:00 PM"} CT</div>`;
     return `<div class="slate"><div class="slate-head"><span class="display t">${s.name} · ${league}</span>${chip}</div>${rows}</div>`;
   }).join("");
 
@@ -442,25 +440,19 @@ function render(d) {
     const w = mine.filter(x => x.result === "win").length;
     const l = mine.filter(x => x.result === "loss").length;
     const pu = mine.filter(x => x.result === "push").length;
-    const lw = mine.filter(x => x.lock && x.result === "win").length;
-    const ll = mine.filter(x => x.lock && x.result === "loss").length;
-    const decl = mine.filter(x => x.lock).length;
     const hw = mine.filter(x => x.homer && x.result === "win").length;
     const hl = mine.filter(x => x.homer && x.result === "loss").length;
     const love = votes.filter(v => v.type === "love" && v.votedFor === p.id).length;
     const hate = votes.filter(v => v.type === "hate" && v.votedFor === p.id).length;
-    return { name: p.name, w, l, pu, pct: w + l ? w / (w + l) : 0, lw, ll, decl, hw, hl, love, hate };
+    return { name: p.name, w, l, pu, pct: w + l ? w / (w + l) : 0, hw, hl, love, hate };
   }).sort((a, b) => b.pct - a.pct || b.w - a.w);
   const maxHate = Math.max(...stats.map(s => s.hate), 0);
-  const maxDecl = Math.max(...stats.map(s => s.decl), 0);
   document.getElementById("board-body").innerHTML = `
-    <tr><th style="text-align:left;padding-left:14px;">Player</th><th>W–L–P</th><th>Win %</th><th>Lock Rec</th><th>Locks Declared</th><th>Homer Rec</th><th>Love</th><th>Hate</th></tr>` +
+    <tr><th style="text-align:left;padding-left:14px;">Player</th><th>W–L–P</th><th>Win %</th><th>Homer Rec</th><th>Love</th><th>Hate</th></tr>` +
     stats.map(s => `<tr>
       <td class="pname">${esc(s.name)}</td>
       <td class="${s.l === 0 && s.w > 0 ? "hot" : s.pct < .5 && s.l > 0 ? "cold" : ""}">${s.w}–${s.l}–${s.pu}</td>
       <td>${Math.round(s.pct * 100)}%</td>
-      <td class="${s.ll > s.lw ? "cold" : ""}">${s.lw}–${s.ll}</td>
-      <td>${s.decl}${s.decl === 0 && week > 1 ? " 🧊" : s.decl === maxDecl && s.decl >= 4 ? " 🚨" : ""}</td>
       <td>${s.hw}–${s.hl}</td>
       <td class="love">${s.love}</td>
       <td class="${s.hate === maxHate && s.hate > 0 ? "cold" : ""}">${s.hate}</td>
@@ -485,8 +477,6 @@ function render(d) {
     if (s.parlay && s.parlay.result === "win") lines.push(`💰 ${s.name} parlay CASHED +${money(s.parlay.payout - s.parlay.stake)}`);
     if (s.parlay && s.parlay.result === "loss") lines.push(`💀 ${s.name} parlay died`);
   });
-  const iceman = stats.find(s => s.decl === 0 && week > 1);
-  if (iceman) lines.push(`🧊 ${esc(iceman.name)} has never declared a lock — coward or genius?`);
   const villain = stats.find(s => s.hate === maxHate && s.hate > 0);
   if (villain) lines.push(`😈 Public Enemy: ${esc(villain.name)} with ${villain.hate} hate votes`);
   const hot = stats[0];
