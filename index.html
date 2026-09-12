@@ -84,6 +84,7 @@
   .pick-row .name { width: 68px; font-weight: 900; text-transform: uppercase; font-size: 12px; letter-spacing: .06em; flex-shrink: 0; }
   .pick-row .bet { flex: 1; min-width: 0; }
   .pick-row .odds { color: var(--muted); font-weight: 800; font-size: 12px; }
+  .pick-row .crest { width: 22px; height: 22px; object-fit: contain; flex-shrink: 0; border: 2px solid var(--ink); background: var(--card); padding: 1px; }
   .empty-row { padding: 22px 16px; font-weight: 800; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); text-align: center; }
   .tag { font-weight: 900; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; padding: 3px 6px; border: 2px solid var(--ink); background: var(--paper); white-space: nowrap; }
   .tag.homer { background: var(--red); color: #fff; }
@@ -193,7 +194,62 @@
    ===================================================================== */
 const SHEET_ID = "1OdFtqM4lmmMXC5HImZKVFPzrinpKO1HFhn7YLynAEb0";
 
-const SLATE_ORDER = { "Saturday": 0, "Sunday": 1 };
+const SLATE_ORDER = { "Thursday": 0, "Friday": 1, "Saturday": 2, "Sunday": 3, "Monday": 4 }; // chronological within a calendar week
+const DEFAULT_SLATES = ["Saturday", "Sunday"]; // shown as empty placeholders even with zero picks yet
+
+/* ---------------- team logos ----------------
+   Matched against the free-text Pick string at render time, so no Sheet
+   schema change is needed. Best-effort: an unmatched or wrong CFB ID just
+   silently shows no logo (onerror removes the broken image) — never breaks
+   the page. Tell Claude if one's missing/wrong and it's a one-line fix. */
+const ESPN_NFL = "https://a.espncdn.com/i/teamlogos/nfl/500/";
+const ESPN_CFB = "https://a.espncdn.com/i/teamlogos/ncaa/500/";
+const TEAM_LOGOS = {
+  // NFL — nickname (and common alt spellings) -> ESPN abbreviation
+  cardinals: ESPN_NFL + "ari.png", falcons: ESPN_NFL + "atl.png", ravens: ESPN_NFL + "bal.png",
+  bills: ESPN_NFL + "buf.png", panthers: ESPN_NFL + "car.png", bears: ESPN_NFL + "chi.png",
+  bengals: ESPN_NFL + "cin.png", browns: ESPN_NFL + "cle.png", cowboys: ESPN_NFL + "dal.png",
+  broncos: ESPN_NFL + "den.png", lions: ESPN_NFL + "det.png", packers: ESPN_NFL + "gb.png",
+  texans: ESPN_NFL + "hou.png", colts: ESPN_NFL + "ind.png", jaguars: ESPN_NFL + "jax.png",
+  chiefs: ESPN_NFL + "kc.png", raiders: ESPN_NFL + "lv.png", chargers: ESPN_NFL + "lac.png",
+  rams: ESPN_NFL + "lar.png", dolphins: ESPN_NFL + "mia.png", vikings: ESPN_NFL + "min.png",
+  patriots: ESPN_NFL + "ne.png", saints: ESPN_NFL + "no.png", giants: ESPN_NFL + "nyg.png",
+  jets: ESPN_NFL + "nyj.png", eagles: ESPN_NFL + "phi.png", steelers: ESPN_NFL + "pit.png",
+  "49ers": ESPN_NFL + "sf.png", niners: ESPN_NFL + "sf.png", seahawks: ESPN_NFL + "sea.png",
+  buccaneers: ESPN_NFL + "tb.png", bucs: ESPN_NFL + "tb.png", titans: ESPN_NFL + "ten.png",
+  commanders: ESPN_NFL + "wsh.png",
+  // CFB — common programs -> ESPN numeric team id (best-effort)
+  kansas: ESPN_CFB + "2305.png", "kansas state": ESPN_CFB + "2306.png", texas: ESPN_CFB + "251.png",
+  oklahoma: ESPN_CFB + "201.png", alabama: ESPN_CFB + "333.png", georgia: ESPN_CFB + "61.png",
+  "ohio state": ESPN_CFB + "194.png", michigan: ESPN_CFB + "130.png", "notre dame": ESPN_CFB + "87.png",
+  lsu: ESPN_CFB + "99.png", "texas a&m": ESPN_CFB + "245.png", florida: ESPN_CFB + "57.png",
+  "florida state": ESPN_CFB + "52.png", clemson: ESPN_CFB + "228.png", oregon: ESPN_CFB + "2483.png",
+  usc: ESPN_CFB + "30.png", ucla: ESPN_CFB + "26.png", washington: ESPN_CFB + "264.png",
+  "penn state": ESPN_CFB + "213.png", wisconsin: ESPN_CFB + "275.png", iowa: ESPN_CFB + "2294.png",
+  nebraska: ESPN_CFB + "158.png", colorado: ESPN_CFB + "38.png", utah: ESPN_CFB + "254.png",
+  arizona: ESPN_CFB + "12.png", "arizona state": ESPN_CFB + "9.png", baylor: ESPN_CFB + "239.png",
+  tcu: ESPN_CFB + "2628.png", "oklahoma state": ESPN_CFB + "197.png", miami: ESPN_CFB + "2390.png",
+  "north carolina": ESPN_CFB + "153.png", tennessee: ESPN_CFB + "2633.png", auburn: ESPN_CFB + "2.png",
+  "ole miss": ESPN_CFB + "145.png", "mississippi state": ESPN_CFB + "344.png",
+  "south carolina": ESPN_CFB + "2579.png", missouri: ESPN_CFB + "142.png", arkansas: ESPN_CFB + "8.png",
+  kentucky: ESPN_CFB + "96.png", vanderbilt: ESPN_CFB + "238.png", duke: ESPN_CFB + "150.png",
+  "virginia tech": ESPN_CFB + "259.png", louisville: ESPN_CFB + "97.png", pitt: ESPN_CFB + "221.png",
+  syracuse: ESPN_CFB + "183.png", "boston college": ESPN_CFB + "103.png", "wake forest": ESPN_CFB + "154.png",
+  "nc state": ESPN_CFB + "152.png", stanford: ESPN_CFB + "24.png", california: ESPN_CFB + "25.png",
+  "oregon state": ESPN_CFB + "204.png", "washington state": ESPN_CFB + "265.png", byu: ESPN_CFB + "252.png",
+  cincinnati: ESPN_CFB + "2132.png", ucf: ESPN_CFB + "2116.png", houston: ESPN_CFB + "248.png",
+  "west virginia": ESPN_CFB + "277.png", "iowa state": ESPN_CFB + "66.png", virginia: ESPN_CFB + "258.png",
+  "georgia tech": ESPN_CFB + "59.png", "michigan state": ESPN_CFB + "127.png", minnesota: ESPN_CFB + "135.png",
+  illinois: ESPN_CFB + "356.png", purdue: ESPN_CFB + "2509.png", indiana: ESPN_CFB + "84.png",
+  rutgers: ESPN_CFB + "164.png", maryland: ESPN_CFB + "120.png", northwestern: ESPN_CFB + "77.png",
+  "texas tech": ESPN_CFB + "2641.png", smu: ESPN_CFB + "2567.png",
+};
+const TEAM_KEYS = Object.keys(TEAM_LOGOS).sort((a, b) => b.length - a.length); // longest first so "kansas state" beats "kansas"
+function logoFor(pickText) {
+  const t = low(pickText);
+  for (const key of TEAM_KEYS) if (t.includes(key)) return TEAM_LOGOS[key];
+  return null;
+}
 const SEASON_WEEKS = 18; // for the "on pace" joke
 
 /* ---------------- demo data (used until SHEET_ID is set) ------------- */
@@ -347,10 +403,13 @@ function render(d) {
 
   /* --- current slate state --- */
   const wkPicks = picks.filter(p => p.week === week);
-  const slates = ["Saturday", "Sunday"].map(name => {
+  const namesPresent = [...new Set(wkPicks.map(p => p.slate))];
+  const slateNames = [...new Set([...DEFAULT_SLATES, ...namesPresent])]
+    .sort((a, b) => (SLATE_ORDER[a] ?? 9) - (SLATE_ORDER[b] ?? 9));
+  const slates = slateNames.map(name => {
     const rows = wkPicks.filter(p => p.slate === name);
     const graded = rows.length > 0 && rows.every(p => p.result !== "");
-    const losses = rows.filter(p => p.result === "loss").length;
+    const losses = new Set(rows.filter(p => p.result === "loss").map(p => p.player)).size; // distinct losing PLAYERS, not pick rows (a player can have >1 bet)
     const bozoRow = bozos.find(b => b.week === week && b.slate === name);
     const parlay = parlays.find(p => p.week === week && p.slate === name);
     return { name, rows, graded, losses, bozoRow, parlay };
@@ -371,7 +430,7 @@ function render(d) {
     const big = isSolo ? "SOLO" : (b.votesFor != null ? `${b.votesFor}–${voterCount - b.votesFor}` : "VOTED");
     hero = { pending: false, kicker: `🤡 Bozo of the Week // Wk ${b.week} ${b.slate}`, who: nameOf(b.bozo), why: b.reason || "No reason recorded. The shame speaks for itself.", big, cap: isSolo ? "Automatic <b>// No Vote Needed</b>" : "Vote Verdict <b>// Guilty</b>" };
   } else if (latest.losses === 0) {
-    hero = { pending: false, kicker: `Wk ${week} ${latest.name} // Clean Sweep`, who: "NOBODY", why: "Everyone won. No Bozo this slate. Congratulations, cowards.", big: "5-0", cap: "Slate <b>// Swept</b>" };
+    hero = { pending: false, kicker: `Wk ${week} ${latest.name} // Clean Sweep`, who: "NOBODY", why: "Everyone won. No Bozo this slate. Congratulations, cowards.", big: `${latest.rows.length}-0`, cap: "Slate <b>// Swept</b>" };
   } else {
     hero = { pending: true, kicker: `🤡 Bozo of the Week // Wk ${week} ${latest.name}`, who: "IN COURT", why: `${latest.losses} losers on the slate. The vote is live in the chat. May the worst man lose.`, big: "⚖️", cap: "Vote <b>// In Progress</b>" };
   }
@@ -398,21 +457,25 @@ function render(d) {
   } else { verdictEl.style.display = "none"; }
 
   /* --- slates --- */
-  document.getElementById("weekend-sub").textContent = week ? `Week ${week} · Two slates · One $10 parlay each` : "Season not started";
+  document.getElementById("weekend-sub").textContent = week
+    ? `Week ${week} · ${namesPresent.length ? namesPresent.slice().sort((a, b) => (SLATE_ORDER[a] ?? 9) - (SLATE_ORDER[b] ?? 9)).join(" · ") : "Saturday · Sunday"}`
+    : "Season not started";
   document.getElementById("slates").innerHTML = slates.map(s => {
-    let chip = `<span class="parlay-chip">Parlay —</span>`;
+    let chip = "";
     if (s.parlay && s.parlay.result === "win") chip = `<span class="parlay-chip parlay-cash">Parlay +${money(s.parlay.payout - s.parlay.stake)}</span>`;
     else if (s.parlay && s.parlay.result === "loss") chip = `<span class="parlay-chip parlay-dead">Parlay ☠ Dead</span>`;
-    else if (s.rows.length && !s.graded) chip = `<span class="parlay-chip parlay-live">Parlay 🔴 Live</span>`;
-    const league = s.name === "Saturday" ? "CFB" : "NFL";
+    else if (s.parlay || s.rows.length > 1) chip = s.rows.length && !s.graded ? `<span class="parlay-chip parlay-live">Parlay 🔴 Live</span>` : `<span class="parlay-chip">Parlay —</span>`;
+    else if (s.rows.length === 1) chip = `<span class="parlay-chip">Solo Bet</span>`; // one bettor, no group parlay leg (e.g. a TNF/MNF side bet)
+    const league = (s.name === "Saturday" || s.name === "Friday") ? "CFB" : "NFL";
     const rows = s.rows.length ? s.rows.map(p => `
       <div class="pick-row">
         <span class="name">${esc(nameOf(p.player))}</span>
+        ${(() => { const crest = logoFor(p.pick); return crest ? `<img class="crest" src="${crest}" alt="" onerror="this.remove()">` : ""; })()}
         <span class="bet">${esc(p.pick)} <span class="odds">${fmtOdds(p.odds)}</span></span>
         ${p.homer ? '<span class="tag homer">Homer</span>' : ""}
         ${p.result === "win" ? '<span class="res w">W</span>' : p.result === "loss" ? '<span class="res l">L</span>' : p.result === "push" ? '<span class="res p">P</span>' : '<span class="res tbd">…</span>'}
       </div>`).join("") :
-      `<div class="empty-row">Awaiting picks — deadline is ${s.name === "Saturday" ? "11:00 AM" : "12:00 PM"} CT</div>`;
+      `<div class="empty-row">Awaiting picks${s.name === "Saturday" ? " — deadline is 11:00 AM CT" : s.name === "Sunday" ? " — deadline is 12:00 PM CT" : ""}</div>`;
     return `<div class="slate"><div class="slate-head"><span class="display t">${s.name} · ${league}</span>${chip}</div>${rows}</div>`;
   }).join("");
 
