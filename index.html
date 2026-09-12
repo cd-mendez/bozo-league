@@ -244,11 +244,22 @@ const TEAM_LOGOS = {
   rutgers: ESPN_CFB + "164.png", maryland: ESPN_CFB + "120.png", northwestern: ESPN_CFB + "77.png",
   "texas tech": ESPN_CFB + "2641.png", smu: ESPN_CFB + "2567.png",
 };
-const TEAM_KEYS = Object.keys(TEAM_LOGOS).sort((a, b) => b.length - a.length); // longest first so "kansas state" beats "kansas"
+const TEAM_KEYS = Object.keys(TEAM_LOGOS);
 function logoFor(pickText) {
+  // The subject of the pick is named first ("Kansas ML vs Missouri"), so the
+  // EARLIEST-appearing team name wins — not the longest one. Ties (e.g. a
+  // string containing both "kansas" and "kansas state" at the same spot)
+  // go to the longer, more specific match.
   const t = low(pickText);
-  for (const key of TEAM_KEYS) if (t.includes(key)) return TEAM_LOGOS[key];
-  return null;
+  let bestKey = null, bestIndex = Infinity;
+  for (const key of TEAM_KEYS) {
+    const idx = t.indexOf(key);
+    if (idx === -1) continue;
+    if (idx < bestIndex || (idx === bestIndex && key.length > (bestKey ? bestKey.length : 0))) {
+      bestKey = key; bestIndex = idx;
+    }
+  }
+  return bestKey ? TEAM_LOGOS[bestKey] : null;
 }
 const SEASON_WEEKS = 18; // for the "on pace" joke
 
