@@ -398,7 +398,7 @@ function render(d) {
   } else { verdictEl.style.display = "none"; }
 
   /* --- slates --- */
-  document.getElementById("weekend-sub").textContent = week ? `Week ${week} · Two slates · One $25 parlay each` : "Season not started";
+  document.getElementById("weekend-sub").textContent = week ? `Week ${week} · Two slates · One $10 parlay each` : "Season not started";
   document.getElementById("slates").innerHTML = slates.map(s => {
     let chip = `<span class="parlay-chip">Parlay —</span>`;
     if (s.parlay && s.parlay.result === "win") chip = `<span class="parlay-chip parlay-cash">Parlay +${money(s.parlay.payout - s.parlay.stake)}</span>`;
