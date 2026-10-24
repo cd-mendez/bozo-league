@@ -194,7 +194,7 @@
    ===================================================================== */
 const SHEET_ID = "1OdFtqM4lmmMXC5HImZKVFPzrinpKO1HFhn7YLynAEb0";
 
-const SLATE_ORDER = { "Thursday": 0, "Friday": 1, "Saturday": 2, "Sunday": 3, "Monday": 4 }; // chronological within a calendar week
+const SLATE_ORDER = { "Thursday": 0, "Friday": 1, "Saturday": 2, "Sunday": 3, "Monday": 4, "Tuesday": 5, "Wednesday": 6 }; // chronological within a calendar week
 const DEFAULT_SLATES = ["Saturday", "Sunday"]; // shown as empty placeholders even with zero picks yet
 
 /* ---------------- team logos ----------------
@@ -204,6 +204,7 @@ const DEFAULT_SLATES = ["Saturday", "Sunday"]; // shown as empty placeholders ev
    the page. Tell Claude if one's missing/wrong and it's a one-line fix. */
 const ESPN_NFL = "https://a.espncdn.com/i/teamlogos/nfl/500/";
 const ESPN_CFB = "https://a.espncdn.com/i/teamlogos/ncaa/500/";
+const ESPN_NBA = "https://a.espncdn.com/i/teamlogos/nba/500/";
 const TEAM_LOGOS = {
   // NFL — nickname (and common alt spellings) -> ESPN abbreviation
   cardinals: ESPN_NFL + "ari.png", falcons: ESPN_NFL + "atl.png", ravens: ESPN_NFL + "bal.png",
@@ -243,6 +244,24 @@ const TEAM_LOGOS = {
   illinois: ESPN_CFB + "356.png", purdue: ESPN_CFB + "2509.png", indiana: ESPN_CFB + "84.png",
   rutgers: ESPN_CFB + "164.png", maryland: ESPN_CFB + "120.png", northwestern: ESPN_CFB + "77.png",
   "texas tech": ESPN_CFB + "2641.png", smu: ESPN_CFB + "2567.png",
+  "utah state": ESPN_CFB + "328.png", "boise state": ESPN_CFB + "68.png", hawaii: ESPN_CFB + "62.png",
+  unlv: ESPN_CFB + "2439.png", memphis: ESPN_CFB + "235.png", troy: ESPN_CFB + "2653.png",
+  "new mexico state": ESPN_CFB + "166.png", "new mexico": ESPN_CFB + "167.png",
+  "north dakota state": ESPN_CFB + "2449.png", ndsu: ESPN_CFB + "2449.png", "jacksonville state": ESPN_CFB + "55.png",
+  "san diego state": ESPN_CFB + "21.png", "fresno state": ESPN_CFB + "278.png", "texas state": ESPN_CFB + "326.png",
+  // NBA — nickname -> ESPN abbreviation. City+nickname keys exist where the city also names a CFB school
+  // ("utah jazz" must beat "utah") so the earliest/longest match picks the pro team.
+  hawks: ESPN_NBA + "atl.png", celtics: ESPN_NBA + "bos.png", nets: ESPN_NBA + "bkn.png",
+  hornets: ESPN_NBA + "cha.png", bulls: ESPN_NBA + "chi.png", cavaliers: ESPN_NBA + "cle.png", cavs: ESPN_NBA + "cle.png",
+  mavericks: ESPN_NBA + "dal.png", mavs: ESPN_NBA + "dal.png", nuggets: ESPN_NBA + "den.png",
+  pistons: ESPN_NBA + "det.png", warriors: ESPN_NBA + "gs.png", "houston rockets": ESPN_NBA + "hou.png", rockets: ESPN_NBA + "hou.png",
+  "indiana pacers": ESPN_NBA + "ind.png", pacers: ESPN_NBA + "ind.png", clippers: ESPN_NBA + "lac.png", lakers: ESPN_NBA + "lal.png",
+  grizzlies: ESPN_NBA + "mem.png", "miami heat": ESPN_NBA + "mia.png", heat: ESPN_NBA + "mia.png", bucks: ESPN_NBA + "mil.png",
+  "minnesota timberwolves": ESPN_NBA + "min.png", timberwolves: ESPN_NBA + "min.png", wolves: ESPN_NBA + "min.png",
+  pelicans: ESPN_NBA + "no.png", knicks: ESPN_NBA + "ny.png", "oklahoma city thunder": ESPN_NBA + "okc.png", thunder: ESPN_NBA + "okc.png",
+  magic: ESPN_NBA + "orl.png", sixers: ESPN_NBA + "phi.png", "76ers": ESPN_NBA + "phi.png", suns: ESPN_NBA + "phx.png",
+  blazers: ESPN_NBA + "por.png", kings: ESPN_NBA + "sac.png", spurs: ESPN_NBA + "sa.png", raptors: ESPN_NBA + "tor.png",
+  "utah jazz": ESPN_NBA + "utah.png", jazz: ESPN_NBA + "utah.png", "washington wizards": ESPN_NBA + "wsh.png", wizards: ESPN_NBA + "wsh.png",
 };
 const TEAM_KEYS = Object.keys(TEAM_LOGOS);
 function logoFor(pickText) {
@@ -477,7 +496,10 @@ function render(d) {
     else if (s.parlay && s.parlay.result === "loss") chip = `<span class="parlay-chip parlay-dead">Parlay ☠ Dead</span>`;
     else if (s.parlay || s.rows.length > 1) chip = s.rows.length && !s.graded ? `<span class="parlay-chip parlay-live">Parlay 🔴 Live</span>` : `<span class="parlay-chip">Parlay —</span>`;
     else if (s.rows.length === 1) chip = `<span class="parlay-chip">Solo Bet</span>`; // one bettor, no group parlay leg (e.g. a TNF/MNF side bet)
-    const league = (s.name === "Saturday" || s.name === "Friday") ? "CFB" : "NFL";
+    const leagueCounts = {};
+    s.rows.forEach(p => { if (p.league) leagueCounts[p.league] = (leagueCounts[p.league] || 0) + 1; });
+    const topLeague = Object.keys(leagueCounts).sort((a, b) => leagueCounts[b] - leagueCounts[a])[0];
+    const league = topLeague || ((s.name === "Saturday" || s.name === "Friday") ? "CFB" : "NFL");
     const rows = s.rows.length ? s.rows.map(p => `
       <div class="pick-row">
         <span class="name">${esc(nameOf(p.player))}</span>
